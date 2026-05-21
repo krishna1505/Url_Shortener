@@ -11,8 +11,9 @@ import { verifyAuthentication } from "./middlewares/verify-auth-middleware.js";
 import { shortenerRoutes } from "./routes/shortener.routes.js";
 
 const app = express();
- const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
+// ✅ Body parsing
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 
@@ -40,14 +41,14 @@ app.use(flash());
 app.use(requestIp.mw());
 
 // This must be after cookieParser middleware.
-app.use(verifyAuthentication);
+// app.use(verifyAuthentication);
 
 // app.use((req, res, next) => {
 //   res.locals.user = req.user;
 //   return next();
 // });
 
-// app.use(verifyAuthentication);
+app.use(verifyAuthentication);
 
 app.use((req, res, next) => {
   res.locals.user = req.user;
@@ -57,10 +58,6 @@ app.use((req, res, next) => {
 
   next();
 });
-
-// app.get("/", (req, res) => {
-//   res.send("Server Working 🚀");
-// });
 
 // app.get("/", (req, res) => {
 //   res.send("Server Running Successfully");
@@ -88,9 +85,6 @@ app.use((req, res, next) => {
 // app.use(router);
 // app.use(authRoutes);
 // app.use(shortenerRoutes);
-
-// app.use("/auth", authRoutes);
-// app.use("/", shortenerRoutes);
 app.use("/auth", authRoutes);
 app.use("/", shortenerRoutes);
 // app.use(express.static("public"));
@@ -100,19 +94,3 @@ app.listen(PORT, () => {
 });
 
 export default app;
-
-
-// import express from "express";
-// const app = express();
-
-// app.use(express.json());
-
-// app.get("/", (req, res) => {
-//   res.send("Base OK 🚀");
-// });
-
-// // ONLY ROUTES (no auth, no session)
-// app.use("/auth", authRoutes);
-// app.use("/", shortenerRoutes);
-
-// export default app;
